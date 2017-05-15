@@ -24,7 +24,8 @@ public class TestEvent {
 
         Instant now = Instant.now();
         long durationInMills =  10000L;
-        List<EventDetail> events = RandomEventStreamGenerator.generateEvents(Instant.now(), durationInMills, 3, 100 );
+        RandomEventStreamGenerator randGen = new RandomEventStreamGenerator();
+        List<EventDetail> events = randGen.generateEvents(Instant.now(), durationInMills, 3, 100 );
         Instant end = now.plusMillis( durationInMills);
 
         assertEquals( events.size(), 100 );
