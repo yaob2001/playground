@@ -13,10 +13,6 @@ import java.util.Set;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-
-/**
- * Created by Bin on 5/11/2017.
- */
 public class TestEvent {
 
     @Test
