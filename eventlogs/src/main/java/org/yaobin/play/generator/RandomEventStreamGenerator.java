@@ -2,6 +2,8 @@ package org.yaobin.play.generator;
 
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaobin.play.data.EventDetail;
 
 import java.time.Instant;
@@ -13,8 +15,10 @@ import java.util.List;
  */
 public class RandomEventStreamGenerator implements IEventGenerator{
 
+    private static Logger log = LoggerFactory.getLogger( RandomEventStreamGenerator.class);
     public RandomEventStreamGenerator(){}
 
+    @Override
     public List<EventDetail> generateEvents(Instant startTime, long durationInMills, int numOfUsers, int numOfEvents){
 
         List<String> userNames = new ArrayList();
@@ -23,18 +27,19 @@ public class RandomEventStreamGenerator implements IEventGenerator{
         }
 
         List<EventDetail> events = new ArrayList<>( numOfEvents);
+        long offset = 0;
         for( int i = 0; i< numOfEvents; ++i ){
             //String user, EventType type, String detail, Instant timeInMillis;
-            String userName = userNames.get( i%numOfUsers);
-            EventDetail.EventType eventType = EventDetail.EventType.getRandomEventType(i);
-            events.add(
-                    new EventDetail(
-                            userName,
-                            eventType,
-                            Math.random(),
-                            startTime.plusMillis((long) (durationInMills / numOfEvents * Math.random()*i)))
-            );
+            String userName = userNames.get( ((int)(Math.random()*numOfUsers)) % numOfUsers );
 
+            EventDetail.EventType eventType = EventDetail.EventType.getRandomEventType();
+            offset = offset +  (int)( durationInMills / numOfEvents * Math.random());
+            EventDetail event = new EventDetail(
+                    userName,
+                    eventType,
+                    Math.random(),
+                    startTime.plusMillis(offset) );
+            events.add( event );
         }
         return events;
     }

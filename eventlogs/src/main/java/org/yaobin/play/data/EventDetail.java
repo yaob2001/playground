@@ -1,20 +1,12 @@
 package org.yaobin.play.data;
 
-
-
 import com.google.common.collect.ImmutableList;
-
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-
-import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
-
-
 /**
  * Created by Bin on 5/11/2017.
  */
 public class EventDetail {
-    private static DateTimeFormatter formatter =  RFC_1123_DATE_TIME;
+
     public enum  EventType {
         SET,
         GET,
@@ -25,8 +17,8 @@ public class EventDetail {
         private static final ImmutableList<EventType> eventList =  ImmutableList.copyOf( EventType.values());
         private static final int length = eventList.size();
 
-        public static EventType getRandomEventType(int seed){
-            return eventList.get(seed%length);
+        public static EventType getRandomEventType(){
+            return eventList.get( ( (int)(Math.random() * length)) % length);
         }
     }
 
@@ -44,7 +36,7 @@ public class EventDetail {
 
     public String toString(){
         StringBuffer buf = new StringBuffer();
-        buf.append( "Time:").append(formatter.format(timeStamp)).append( " Type:").
+        buf.append( "User: ").append( userName ).append( " Time:").append(timeStamp.toString()).append( " Type:").
                 append( eventType.name()).append( " Details:").append( eventValue);
         return buf.toString();
     }

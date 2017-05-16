@@ -4,6 +4,7 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaobin.play.data.EventDetail;
+import org.yaobin.play.generator.IEventGenerator;
 import org.yaobin.play.generator.RandomEventStreamGenerator;
 
 import java.time.Instant;
@@ -13,17 +14,18 @@ import java.util.List;
 /**
  * Created by Bin on 5/12/2017.
  */
-public class EventAnalyzer {
+public class EventSummaryAnalyzer implements IEventAnalyzer {
 
-    private static Logger log = LoggerFactory.getLogger( EventAnalyzer.class);
+    private static Logger log = LoggerFactory.getLogger( EventSummaryAnalyzer.class);
     SummaryStatistics valueSummary;
     SummaryStatistics timeStampSummary;
 
-    public EventAnalyzer(){
+    public EventSummaryAnalyzer(){
         valueSummary = new SummaryStatistics();
         timeStampSummary = new SummaryStatistics();
     }
 
+    @Override
     public void analyzeEvent(List<EventDetail> events ){
         events.stream().forEach(e -> {
             valueSummary.addValue(e.eventValue);
@@ -35,9 +37,9 @@ public class EventAnalyzer {
 
     public static void main( String[] args) {
 
-        RandomEventStreamGenerator generator = new RandomEventStreamGenerator();
+        IEventGenerator generator = new RandomEventStreamGenerator();
         List< EventDetail> events = generator.generateEvents( Instant.now(),  1000,  5, 1000);
-        EventAnalyzer analyzer = new EventAnalyzer();
+        IEventAnalyzer analyzer = new EventSummaryAnalyzer();
         analyzer.analyzeEvent( events );
 
     }
