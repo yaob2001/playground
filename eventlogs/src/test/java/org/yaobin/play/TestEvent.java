@@ -28,7 +28,5 @@ public class TestEvent {
         Set<String> userNames = new HashSet<>();
         events.stream().forEach( event -> { userNames.add( event.userName); assertTrue( event.timeStamp.isBefore( end));});
         assertTrue( userNames.size() <= 3);
-
-
     }
 }
